@@ -1,6 +1,6 @@
 import jsoul.midi.*;
 
-// Some JSouL example code.
+// Some JSouL example code. More to come.
 public class JSouLTester {
 	
 	public static void main(String[] args) throws Exception {
@@ -19,7 +19,7 @@ public class JSouLTester {
 		// create a new Sequence object holding the sole Track
 		Sequence s = new Sequence(t);
 		
-		// set the sequence tempo
+		// set the sequence tempo in beats per minute
 		s.setTempoInBPM(150);
 		
 		// play the sequence
