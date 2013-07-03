@@ -13,7 +13,7 @@ public class JSouLTester {
 			t.add(new Note((int) (Math.random() * 30 + 60), Dynamics.FORTE, Note.SIXTYFOURTH));
 		}
 		
-		// set instrument to honky tony piano
+		// set instrument to honky tonk piano
 		t.setInstrument(Instrument.HONKY_TONK_PIANO);
 		
 		// create a new Sequence object holding the sole Track
