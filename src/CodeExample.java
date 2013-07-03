@@ -1,7 +1,7 @@
 import jsoul.midi.*;
 
 // Some JSouL example code. More to come.
-public class JSouLTester {
+public class CodeExample {
 	
 	public static void main(String[] args) throws Exception {
 		
