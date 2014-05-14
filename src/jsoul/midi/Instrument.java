@@ -1,6 +1,11 @@
 package jsoul.midi;
 import javax.sound.midi.*;
 
+/**
+ * Represents a MIDI instrument. Contains static fields for 128 different
+ * MIDI instruments. Useful for building Tracks.
+ * @author Andrew Goldin
+ */
 public class Instrument {
 
 	public static final int PIANO = 0,
@@ -134,18 +139,34 @@ public class Instrument {
 
 	private int instrument;
 
+	/**
+	 * Constructs a new Instrument with the given instrument value (0-127).
+	 * @param instNum the instrument value
+	 */
 	public Instrument(int instNum) {
 		instrument = instNum;
 	}
 
+	/**
+	 * Gets the MIDI instrument value for this instrument.
+	 * @return the instrument number
+	 */
 	public int getInstrumentNumber() {
 		return instrument;
 	}
 
+	/**
+	 * Sets the instrument value for this instrument
+	 * @param instNum the instrument number (0-127)
+	 */
 	public void setInstrument(int instNum) {
 		instrument = instNum;
 	}
 	
+	/**
+	 * Returns a String representation of the instrument.
+	 * @return a String representation
+	 */
 	public String toString() {
 		String s = "";
 		try {

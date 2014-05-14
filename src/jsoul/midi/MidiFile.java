@@ -3,44 +3,80 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.sound.midi.*;
 
-public class Midi {
+/**
+ * Represents a MIDI file format, and provides an interface to read from
+ * and write to .mid files.
+ * @author Andrew Goldin
+ */
+public class MidiFile {
 
 	private String name;
 
-	public Midi() {
+	/**
+	 * Default constructor: Defines a MIDI file named "output.mid".
+	 */
+	public MidiFile() {
 		name = "output.mid";
 	}
 
-	public Midi(String fileName) {
+	/**
+	 * Constructs a new MIDI file object with the given filename.
+	 * @param fileName the desired filename
+	 */
+	public MidiFile(String fileName) {
 		name = fileName;
 		if (!name.endsWith(".mid")) name += ".mid";
 	}
 
+	/**
+	 * Set the desired file name of the MIDI file.
+	 * @param fileName the desired file name
+	 */
 	public void setFileName(String fileName) {
 		name = fileName;
 		if (!name.endsWith(".mid")) name += ".mid";
 	}
 
+	/**
+	 * Get the object's file name.
+	 * @return the file name
+	 */
 	public String getFileName() {
 		return name;
 	}
 
-	// WRITE NOTE TO FILE
+	/**
+	 * Writes a single note to a MIDI file, using the file name specified in
+	 * the MidiFile's constructor.
+	 * @param n the Note to be written
+	 */
 	public void writeToFile(Note n) {
 		writeToFile(new Sequence(new Track(n)));
 	}
 
-	// WRITE CHORD TO FILE
+	/**
+	 * Writes a single chord to a MIDI file, using the file name specified in
+	 * the MidiFile's constructor.
+	 * @param c the Chord to be written
+	 */
 	public void writeToFile(Chord c) {
 		writeToFile(new Sequence(new Track(c)));
 	}
 	
-	// WRITE TRACK TO FILE
+	/**
+	 * Writes a single jsoul track to a MIDI file, using the file name specified in
+	 * the MidiFile's constructor.
+	 * @param t the Track to be written
+	 */
 	public void writeToFile(Track t) {
 		writeToFile(new Sequence(t));
 	}
 
-	// WRITE SEQUENCE TO FILE
+	/**
+	 * Writes a jsoul Sequence to a MIDI file, using the file name specified in
+	 * the MidiFile's constructor.
+	 * @param s the Sequence to be written
+	 */
 	public void writeToFile(Sequence s) {
 		javax.sound.midi.Sequence seq = s.createMidiSequence();
 		try {
@@ -51,6 +87,9 @@ public class Midi {
 		}
 	}
 	
+	/**
+	 * Clears the MIDI file of all content, if the file exists in the system.
+	 */
 	public void clear() {
 		Track[] tracks = null;
 		try {
@@ -68,6 +107,12 @@ public class Midi {
 	}
 
 	// this method will only work on files created with jsoul
+	/**
+	 * Will convert the file (if it exists in the system) into a jsoul-compatible
+	 * Sequence that can be modified using jsoul's API. Currently is only guaranteed
+	 * to work on files that were originally created with jsoul.
+	 * @return the jsoul Sequence generated from the file
+	 */
 	public Sequence getSequence() {
 		javax.sound.midi.Sequence inputSequence = null;
 		try {
@@ -109,12 +154,15 @@ public class Midi {
 						chordSize--;
 						if (chordSize == 0 && chord) {
 							if (pitchList.size() == 1) {
-								outputTracks[i].add(new Note(pitchList.get(0), velocity, (int) (event.getTick() - currentTick)));
+								outputTracks[i].add(new Note(pitchList.get(0),
+										velocity, (int) (event.getTick() - currentTick)));
 							}
 							else {
 								int[] list = new int[pitchList.size()];
-								for (int k = 0; k < list.length; k++) list[k] = pitchList.get(k).intValue();
-								outputTracks[i].add(new Chord(list, velocity, (int) (event.getTick() - currentTick)));
+								for (int k = 0; k < list.length; k++)
+									list[k] = pitchList.get(k).intValue();
+								outputTracks[i].add(new Chord(list, velocity,
+										(int) (event.getTick() - currentTick)));
 							}
 							chord = false;
 							pitchList.clear();
@@ -136,6 +184,12 @@ public class Midi {
 		return s;
 	}
 	
+	/**
+	 * Appends a given Sequence to the end of an existing MIDI file, and writing the result
+	 * to a new file. Will only work if the original file and provided sequence have the
+	 * same number of tracks.
+	 * @param s The sequence to append.
+	 */
 	public void append(Sequence s) {
 		Track[] sourceTracks = this.getSequence().getTracks();
 		Track[] inputTracks = s.getTracks();
